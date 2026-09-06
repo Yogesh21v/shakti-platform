@@ -75,6 +75,25 @@ upvote/reply to posts, search the member directory, and browse the business idea
 legal FAQ pages (all of that content is served from the database too, not hardcoded in
 the page).
 
+### Automated end-to-end testing
+
+The `tests/` folder has a real Playwright suite that drives the app the same way a user
+would — in an actual browser, against the real API and the real (in-memory) database —
+covering registration/login and session persistence, starting a discussion, live
+upvoting/un-voting, threaded replies (as a second logged-in user), member search and
+district/skill filtering, and forum category filtering.
+
+```bash
+cd tests
+npm install
+npx playwright install chromium   # first time only, downloads a test browser
+npm test
+```
+
+Playwright starts the API and a static server for the client itself (no need to have
+them running already), so `npm test` from a clean checkout is enough. `npm run report`
+opens the last HTML test report.
+
 ---
 
 ## Frontend structure (`client/`)
