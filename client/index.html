@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShaktiConnect — For the Women of Andhra & Tamil Nadu</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Noto+Serif+Telugu:wght@400;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/extra.css">
+</head>
+<body class="kolam-bg">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon">🌸</div>
+    <div>
+      <span class="nav-logo-text">ShaktiConnect</span>
+      <span class="nav-logo-sub">Andhra & Tamil Nadu</span>
+    </div>
+  </div>
+
+  <div class="nav-links">
+    <span class="nav-link active" id="nav-home" onclick="showPage('home')">🏠 Home</span>
+    <span class="nav-link" id="nav-forum" onclick="showPage('forum')">💬 Forums</span>
+    <span class="nav-link" id="nav-biz" onclick="showPage('biz')">💼 Business</span>
+    <span class="nav-link" id="nav-legal" onclick="showPage('legal')">⚖️ Legal Help</span>
+    <span class="nav-link" id="nav-members" onclick="showPage('members')">👩 Members</span>
+
+    <!-- Logged-out state -->
+    <span class="nav-link" id="nav-login" onclick="Auth.open('login')">Log In</span>
+    <span class="nav-link" id="nav-register" onclick="Auth.open('register')" style="background:rgba(255,255,255,0.14);border-color:rgba(255,255,255,0.25)">Join Free</span>
+
+    <!-- Logged-in state -->
+    <span class="nav-account" id="nav-account" style="display:none">
+      <span class="nav-account-avatar" id="nav-account-avatar">?</span>
+      <span class="nav-account-name" id="nav-account-name"></span>
+      <span class="nav-link" onclick="Auth.logout()">Log Out</span>
+    </span>
+
+    <div class="lang-switcher">
+      <span class="lang-btn active" onclick="setLang(this)">EN</span>
+      <span class="lang-btn" onclick="setLang(this)">తె</span>
+      <span class="lang-btn" onclick="setLang(this)">த</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HOME ===== -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-badge">✨ Community for Homemakers</div>
+    <h1 class="hero-title">Your Voice, Your<br><span>Strength, Your Network</span></h1>
+    <div class="hero-sub-telugu">మీ శక్తి • உங்கள் சக்தி</div>
+    <p class="hero-desc">
+      A safe, empowering space for women of Andhra Pradesh & Tamil Nadu — to share ideas, grow businesses, find legal support, and lift each other up.
+    </p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="Auth.open('register')">Join Free — Start Today</button>
+      <button class="btn-outline" onclick="showPage('forum')">Explore Community →</button>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">12,400+</div>
+      <div class="stat-label">Women Members</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3,200+</div>
+      <div class="stat-label">Discussions</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">580+</div>
+      <div class="stat-label">Businesses Started</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">18</div>
+      <div class="stat-label">Districts Covered</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section">
+    <h2 class="section-title">Everything You Need to Thrive</h2>
+    <p class="section-sub">From kitchen conversations to business plans — we've got your back.</p>
+    <div class="features-grid">
+      <div class="feature-card fc-forum" onclick="showPage('forum')">
+        <div class="fc-icon">💬</div>
+        <div class="fc-title">Community Forums</div>
+        <div class="fc-desc">Talk about anything — recipes, parenting, health, relationships, finance. Ask questions, share wisdom.</div>
+        <div class="fc-tag">Discuss</div>
+      </div>
+      <div class="feature-card fc-biz" onclick="showPage('biz')">
+        <div class="fc-icon">💡</div>
+        <div class="fc-title">Business Ideas & Funding</div>
+        <div class="fc-desc">Explore home business ideas, government schemes, SHG loans, and connect with mentors who've done it.</div>
+        <div class="fc-tag">Grow</div>
+      </div>
+      <div class="feature-card fc-legal" onclick="showPage('legal')">
+        <div class="fc-icon">⚖️</div>
+        <div class="fc-title">Legal Help & Rights</div>
+        <div class="fc-desc">Know your rights — property, domestic issues, inheritance, workplace. Free guidance & helplines.</div>
+        <div class="fc-tag">Protect</div>
+      </div>
+      <div class="feature-card fc-network" onclick="showPage('members')">
+        <div class="fc-icon">🤝</div>
+        <div class="fc-title">Member Profiles</div>
+        <div class="fc-desc">Find women near you, collaborate on ventures, join local groups, or mentor someone just starting out.</div>
+        <div class="fc-tag">Connect</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECENT DISCUSSIONS (live from the backend) -->
+  <div class="section" style="padding-top:0">
+    <h2 class="section-title">Trending in the Community</h2>
+    <p class="section-sub">Jump into the latest conversations</p>
+    <div class="discussions-preview">
+      <div class="dp-header">
+        <span class="dp-title">🔥 Hot Discussions</span>
+        <span class="dp-see-all" onclick="showPage('forum')">See all forums →</span>
+      </div>
+      <div id="home-trending-list">
+        <!-- populated by Forum.loadTrending() -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FORUM ===== -->
+<div class="page" id="page-forum">
+  <div class="page-header">
+    <div style="max-width:1100px;margin:0 auto">
+      <h1 class="ph-title">💬 Community Forums</h1>
+      <p class="ph-sub">Ask, share, support — in Telugu, Tamil, or English</p>
+    </div>
+  </div>
+
+  <div class="forum-layout">
+    <div>
+      <div class="forum-categories" id="forum-categories">
+        <!-- populated by Forum.loadCategories() -->
+      </div>
+
+      <div id="forum-thread-list">
+        <!-- populated by Forum.loadPosts() -->
+      </div>
+    </div>
+
+    <div class="forum-sidebar">
+      <div class="sidebar-card">
+        <button class="post-btn" onclick="Forum.openNewPostModal()">+ Start a New Discussion</button>
+        <button class="post-btn" style="background:var(--teal)" onclick="showToast('Coming soon: Anonymous posting mode!')">🔒 Post Anonymously</button>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-title">👑 Active Mentors</div>
+        <div id="mentors-list">
+          <!-- populated by Forum.loadMentors() -->
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sc-title">📍 Filter by District</div>
+        <select class="filter-select" id="forum-district-filter" style="width:100%;margin-top:4px" onchange="Forum.loadPosts()">
+          <option>All Districts</option>
+          <option>Guntur (AP)</option>
+          <option>Vijayawada (AP)</option>
+          <option>Vizag (AP)</option>
+          <option>Tirupati (AP)</option>
+          <option>Chennai (TN)</option>
+          <option>Coimbatore (TN)</option>
+          <option>Madurai (TN)</option>
+          <option>Salem (TN)</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BUSINESS ===== -->
+<div class="page" id="page-biz">
+  <div class="page-header" style="background:linear-gradient(120deg,#8A5C00,#3A2500)">
+    <div style="max-width:1100px;margin:0 auto">
+      <h1 class="ph-title">💼 Business Ideas & Funding</h1>
+      <p class="ph-sub">From home kitchen to thriving business — discover what women like you have built</p>
+    </div>
+  </div>
+
+  <div class="funding-banner">
+    <div style="height:1.5rem"></div>
+    <div class="fb-inner">
+      <div class="fb-left">
+        <h3>🏦 Government Schemes for Women</h3>
+        <p>Apply for free — many women in our community have used these to start their first business</p>
+      </div>
+      <div class="fb-schemes" id="schemes-list">
+        <!-- populated by Business.loadSchemes() -->
+      </div>
+    </div>
+  </div>
+
+  <div class="biz-grid" id="business-ideas-grid">
+    <!-- populated by Business.loadIdeas() -->
+  </div>
+</div>
+
+<!-- ===== LEGAL ===== -->
+<div class="page" id="page-legal">
+  <div class="page-header" style="background:linear-gradient(120deg,var(--teal),#0A3A47)">
+    <div style="max-width:1100px;margin:0 auto">
+      <h1 class="ph-title">⚖️ Legal Help & Your Rights</h1>
+      <p class="ph-sub">Know your rights. Free guidance in Telugu & Tamil. You are protected by law.</p>
+    </div>
+  </div>
+
+  <div style="max-width:1100px;margin:2rem auto;padding:0 2rem">
+    <div class="helpline-box">
+      <div class="hb-title">📞 Emergency & Legal Helplines</div>
+      <div class="hb-sub">Free to call. Available 24/7 for urgent situations.</div>
+      <div class="helplines" id="helplines-list">
+        <!-- populated by Legal.loadHelplines() -->
+      </div>
+    </div>
+  </div>
+
+  <div class="legal-layout" id="legal-categories-grid">
+    <!-- populated by Legal.loadCategories() -->
+  </div>
+</div>
+
+<!-- ===== MEMBERS ===== -->
+<div class="page" id="page-members">
+  <div class="page-header" style="background:linear-gradient(120deg,#4A1A35,#1C0A15)">
+    <div style="max-width:1100px;margin:0 auto">
+      <h1 class="ph-title">👩 Our Members</h1>
+      <p class="ph-sub">Connect with inspiring women from across Andhra Pradesh & Tamil Nadu</p>
+    </div>
+  </div>
+
+  <div class="members-layout">
+    <div class="members-search">
+      <input class="search-input" type="text" id="members-search-input" placeholder="🔍  Search by name, skill, or location..." oninput="Members.load()">
+      <select class="filter-select" id="members-district-filter" onchange="Members.load()">
+        <option>All Districts</option>
+        <option>Guntur (AP)</option>
+        <option>Vijayawada (AP)</option>
+        <option>Chennai (TN)</option>
+        <option>Coimbatore (TN)</option>
+        <option>Madurai (TN)</option>
+        <option>Vizag (AP)</option>
+      </select>
+      <select class="filter-select" id="members-skill-filter" onchange="Members.load()">
+        <option>All Skills</option>
+        <option>Cooking & Food</option>
+        <option>Textiles & Crafts</option>
+        <option>Digital & Online</option>
+        <option>Education</option>
+      </select>
+    </div>
+
+    <div class="members-grid" id="members-grid">
+      <!-- populated by Members.load() -->
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: start a discussion -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-title">💬 Start a Discussion</div>
+    <div class="form-field">
+      <label class="form-label">Category</label>
+      <select class="form-select" id="post-category">
+        <option>Home & Kitchen</option>
+        <option>Business</option>
+        <option>Rights & Law</option>
+        <option>Health</option>
+        <option>Parenting</option>
+        <option>Education</option>
+        <option>Money & Jobs</option>
+      </select>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Your Question / Topic</label>
+      <input class="form-input" type="text" id="post-title" placeholder="What would you like to discuss?">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Details (optional)</label>
+      <textarea class="form-textarea" id="post-body" placeholder="Add more context — the more you share, the better responses you'll get..."></textarea>
+    </div>
+    <div class="form-field">
+      <label class="form-label">Your District</label>
+      <select class="form-select" id="post-district">
+        <option>Guntur (AP)</option>
+        <option>Vijayawada (AP)</option>
+        <option>Vizag (AP)</option>
+        <option>Chennai (TN)</option>
+        <option>Coimbatore (TN)</option>
+        <option>Madurai (TN)</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="Forum.submitPost()">Post Discussion →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: login / register -->
+<div class="modal-overlay" id="modal-auth">
+  <div class="modal">
+    <div class="modal-title" id="auth-title">Log In</div>
+
+    <div class="form-field" id="auth-field-name">
+      <label class="form-label">Your Name</label>
+      <input class="form-input" type="text" id="auth-name" placeholder="e.g. Padmavathi S">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="auth-email" placeholder="you@example.com">
+    </div>
+    <div class="form-field">
+      <label class="form-label">Password</label>
+      <input class="form-input" type="password" id="auth-password" placeholder="At least 6 characters">
+    </div>
+    <div class="form-field" id="auth-field-district">
+      <label class="form-label">Your District</label>
+      <select class="form-select" id="auth-district">
+        <option>Guntur (AP)</option>
+        <option>Vijayawada (AP)</option>
+        <option>Vizag (AP)</option>
+        <option>Tirupati (AP)</option>
+        <option>Chennai (TN)</option>
+        <option>Coimbatore (TN)</option>
+        <option>Madurai (TN)</option>
+        <option>Salem (TN)</option>
+      </select>
+    </div>
+    <div class="form-field" id="auth-field-skills">
+      <label class="form-label">A skill or interest (optional)</label>
+      <select class="form-select" id="auth-skill">
+        <option value="">— none —</option>
+        <option>Cooking & Food</option>
+        <option>Textiles & Crafts</option>
+        <option>Digital & Online</option>
+        <option>Education</option>
+        <option>Business & Money</option>
+        <option>Rights & Law</option>
+      </select>
+    </div>
+
+    <div id="auth-error" class="auth-error" style="display:none"></div>
+
+    <div class="modal-btns">
+      <button class="btn-cancel" onclick="Auth.close()">Cancel</button>
+      <button class="btn-primary" id="auth-submit-btn" onclick="Auth.submit()">Log In →</button>
+    </div>
+    <div class="auth-switch" id="auth-switch"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  <strong>ShaktiConnect</strong> — Built for the Women of Andhra Pradesh & Tamil Nadu 🌸<br>
+  <span style="font-size:0.72rem;opacity:0.5;margin-top:6px;display:block">Connected to a real backend — accounts, discussions and votes are saved.</span>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/toast.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/members.js"></script>
+<script src="js/forum.js"></script>
+<script src="js/business.js"></script>
+<script src="js/legal.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

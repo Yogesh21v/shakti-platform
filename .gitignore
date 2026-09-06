@@ -1,0 +1,15 @@
+# dependencies
+node_modules/
+
+# environment variables (never commit real secrets)
+server/.env
+
+# local database files (auto-created by mongodb-memory-server)
+server/data/
+
+# logs
+*.log
+
+# OS junk
+.DS_Store
+Thumbs.db
